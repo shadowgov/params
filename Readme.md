@@ -58,6 +58,12 @@ console.log(hash);
 // => { foo: 1, baz: 3 }
 ```
 
+## Installation
+
+```
+$ npm install params
+```
+
 ## Requirements
 
 - Node.js >= 0.6.0
