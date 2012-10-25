@@ -4,6 +4,60 @@
 
 ## Synopsis
 
+```js
+var params = require('params');
+```
+
+### #only
+
+Remove everything, except the supplied keys.
+
+```js
+params({ foo: 1, bar: 2, baz: 3 }).only('foo', 'baz');
+params({ foo: 1, bar: 2, baz: 3 }).only(['foo', 'baz']);
+
+// => { foo: 1, baz: 3 }
+```
+
+### #except
+
+Remove the supplied keys.
+
+```js
+params({ foo: 1, bar: 2, baz: 3 }).except('foo', 'baz');
+params({ foo: 1, bar: 2, baz: 3 }).except(['foo', 'baz']);
+
+// => { bar: 2 }
+```
+
+### #require
+
+Require given keys
+
+```js
+params({ foo: 1, bar: 2, baz: 3 }).require('missing', 'key');
+params({ foo: 1, bar: 2, baz: 3 }).require(['missing', 'key']);
+
+// Error: Missing key "missing" for { foo: 1, bar: 2, baz: 3 }
+```
+
+### #permit/slice
+
+Like `#only`, but mutates the object.
+
+```js
+var hash = { foo: 1, bar: 2, baz: 3 };
+
+params(hash)
+  .permit('foo')
+  .permit('baz')
+  .slice()
+
+console.log(hash);
+
+// => { foo: 1, baz: 3 }
+```
+
 ## Requirements
 
 - Node.js >= 0.6.0

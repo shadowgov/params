@@ -41,7 +41,7 @@ describe('params', function() {
     } catch (e) {
       err = e;
     } finally {
-      err.message.should.eql('Missing key "missing" for { foo: \'bar\', baz: \'zo\', cl: \'fn\' }')
+      err.message.should.eq('Missing key "missing" for { foo: \'bar\', baz: \'zo\', cl: \'fn\' }')
       err = null;
     }
 
