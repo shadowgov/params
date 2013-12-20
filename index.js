@@ -1,8 +1,6 @@
-/*!
- * Core dependencies.
- */
+var typeOf = require('type-detect');
 
-var util = require('util');
+module.exports.Params = Params;
 
 /**
  * Params constructor.
@@ -12,6 +10,7 @@ var util = require('util');
  */
 
 function Params(hash) {
+  if (!(this instanceof Params)) return new Params(hash);
   this.hash = hash;
   this.allowed = [];
 };
@@ -27,8 +26,8 @@ function Params(hash) {
  */
 
 Params.prototype.parse = function(args) {
-  args = slice(args);
-  if (args.length === 1 && Array.isArray(args[0])) return args[0];
+  args = [].slice.call(args);
+  if (args.length === 1 && 'array' === typeOf(args[0])) return args[0];
   return args
 };
 
@@ -43,8 +42,8 @@ Params.prototype.parse = function(args) {
  */
 
 Params.prototype.only = function(args) {
-  var allowed = this.parse(arguments)
-    , obj = {};
+  var allowed = this.parse(arguments);
+  var obj = {};
 
   allowed.forEach(function(key) {
     obj[key] = this.hash[key];
@@ -62,8 +61,8 @@ Params.prototype.only = function(args) {
  */
 
 Params.prototype.except = function(args) {
-  var filtered = this.parse(arguments)
-    , obj = {};
+  var filtered = this.parse(arguments);
+  var obj = {};
 
   Object.keys(this.hash).forEach(function(key) {
     if (~filtered.indexOf(key)) return;
@@ -83,12 +82,12 @@ Params.prototype.except = function(args) {
  */
 
 Params.prototype.require = function(args) {
-  var required = this.parse(arguments)
-    , obj = {};
+  var required = this.parse(arguments);
+  var obj = {};
 
   required.forEach(function(key) {
     if (key in this.hash) return;
-    throw new Error('Missing key "' + key + '" for ' + util.inspect(this.hash));
+    throw new Error('Missing key "' + key + '"');
   }, this);
 
   return this.hash;
@@ -120,31 +119,3 @@ Params.prototype.slice = function() {
     }
   }, this);
 };
-
-/**
- * Slice.
- *
- * @param {Arguments} args
- * @returns {Array}
- */
-
-function slice(args) {
-  return Array.prototype.slice.call(args);
-};
-
-/*!
- * Create a new params object.
- *
- * @param {Object} object
- * @returns {Params} object
- */
-
-module.exports = function(hash) {
-  return new Params(hash);
-};
-
-/*!
- * Expose `Params`.
- */
-
-module.exports.Params = Params;

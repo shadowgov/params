@@ -27,7 +27,7 @@ test('params(x).except(y)', function() {
 test('params(x).require(y)', function() {
   (function() {
     params(fixture).require('missing');
-  }).should.throw('Missing key "missing" for { foo: \'bar\', baz: \'zo\', cl: \'fn\' }');
+  }).should.throw('Missing key "missing"');
 
   (function() {
     params(fixture).require('foo');

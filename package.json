@@ -17,7 +17,9 @@
   "scripts": {
     "test": "hydro"
   },
-  "dependencies": {},
+  "dependencies": {
+    "type-detect": "~0.1.2"
+  },
   "devDependencies": {
     "chai": "*",
     "hydro": "*",
