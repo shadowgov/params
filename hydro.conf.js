@@ -3,7 +3,7 @@ module.exports = function(hydro) {
     attach: global,
     formatter: 'hydro-dot',
     globals: {
-      params: require('./index').Params
+      params: require('./index')
     },
     plugins: [
       'hydro-chai'
