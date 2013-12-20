@@ -2,24 +2,26 @@
   "name": "params",
   "version": "0.0.1",
   "description": "Hash filter utility. Like strong params.",
-  "main": "./index.js",
+  "author": "Veselin Todorov <hi@vesln.com>",
+  "license": "MIT",
+  "keywords": [],
   "homepage": "https://github.com/vesln/params",
-  "scripts": {
-    "test": "make test"
-  },
+  "main": "./index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/vesln/params"
   },
-  "keywords": [],
-  "dependencies": {},
-  "devDependencies": {
-    "mocha": "*",
-    "chai": "*"
-  },
-  "author": "Veselin Todorov <hi@vesln.com>",
-  "license": "MIT",
   "engines": {
     "node": ">= 0.6.0"
+  },
+  "scripts": {
+    "test": "hydro"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "*",
+    "hydro": "*",
+    "hydro-dot": "*",
+    "hydro-chai": "*"
   }
 }
