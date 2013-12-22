@@ -1,0 +1,16 @@
+{
+  "name": "params",
+  "repo": "vesln/params",
+  "description": "",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js"
+  ],
+  "development": {
+    "chaijs/type-detect": "0.1.2",
+    "hydrojs/hydro-chai": "*",
+    "chaijs/chai": "1.8.1"
+  }
+}
