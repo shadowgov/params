@@ -1,4 +1,4 @@
-var typeOf = require('type-detect');
+var type = require('type-detect');
 
 module.exports = Params;
 
@@ -72,6 +72,153 @@ function extend(a, b) {
 
   return a;
 };
+
+/**
+ * ### Params.merge (destination, source, ...)
+ *
+ * For each source, shallow merge its key/values to the
+ * destination. Sources are read in order, meaning the same
+ * key in a later source will overwrite the key's value set
+ * earlier.
+ *
+ * Also, this tool only supports objects and arrays. Furthermore,
+ * the destination and all sources must be of the same type.
+ *
+ * ```js
+ * var merge = require('tea-merge');
+ *
+ * // sample objects
+ * var a = { hello: 'universe', arr: [ { a: 'a' } ] }
+ *   , b = { speak: 'loudly', arr: [ { b: 'b' }, { c: 'c' } };
+ *
+ * merge(a, b);
+ * a.should.deep.equal({
+ *     hello: 'universe'
+ *   , speak: 'loudly'
+ *   , arr: [
+ *         { a: 'a', b: 'b' }
+ *       , { c: 'c' }
+ *     ]
+ * });
+ * ```
+ *
+ * When merging objects, it is expected that if the
+ * key from the source already exists in the destination,
+ * the existing value in the source supports the same type of
+ * iteration as in the destination. If they cannot, a
+ * `Incompatible merge scenario.` error will be thrown.
+ *
+ * ##### Rules
+ *
+ * - Non-iterable values can be replaced with other
+ * non-iterable values: strings, numbers, etc.
+ * - Iterable values cannot replace non-iterable
+ * values; objects can't replace string, arrays, can't
+ * replace numbers, etc.
+ * - Non-iterable values cannot replace iterable
+ * values; numbers can't replace objects, strings can't
+ * replace arrays, etc.
+ *
+ * @param {Array|Object} destination
+ * @param {Array|Object} sources ...
+ * @return {Object} destination merge
+ * @api public
+ */
+
+Params.merge = function() {;
+  var args = [].slice.call(arguments);
+  var res = args[0];
+
+  for (var i = 1; i < args.length; i++) {
+    merge(res, args[i]);
+  }
+
+  return res;
+};
+
+/*!
+ * Start merge scenario by detecting if capable
+ * and proxying to the appropriate sub-function.
+ *
+ * @param {Array|Object} destination
+ * @param {Array|ObjectArray|Object} source
+ * @return {Array|Object} destination merged
+ * @api private
+ */
+
+function merge(a, b) {
+  if (type(a) !== type(b)) {
+    throw new Error('Incompatible merge scenario.');
+  } else if ('object' === type(a)) {
+    return mergeObject(a, b);
+  } else if ('array' === type(a)) {
+    return mergeArray(a, b);
+  } else {
+    throw new Error('Unsupported merge scenario');
+  }
+};
+
+/*!
+ * Start merge scenario for arrays.
+ *
+ * @param {Array} destination
+ * @param {Array} source
+ * @return {Array} destination merged
+ * @api private
+ */
+
+function mergeArray(a, b) {
+  var adds = [];
+  var ai = 0;
+
+  for (var i = 0; i < b.length; i++) {
+    if (('object' === type(a[i]) && 'object' === type(b[i]))
+    ||  ('array' === type(a[i]) && 'array' === type(b[i]))) {
+      a[i] = merge(a[i], b[i]);
+    } else if ('object' === type(b[i])) {
+      adds.push(merge({}, b[i]));
+    } else if ('array' === type(b[i])) {
+      adds.push(merge([], b[i]));
+    } else if (!~a.indexOf(b[i])) {
+      adds.push(b[i]);
+    }
+  }
+
+  for (; ai < adds.length; ai++) {
+    a.push(adds[ai]);
+  }
+
+  return a;
+}
+
+/*!
+ * Start merge scenario for objects.
+ *
+ * @param {Object} destination
+ * @param {Object} source
+ * @return {Object} destination merged
+ * @api private
+ */
+
+function mergeObject (a, b) {
+  var keys = Object.keys(b)
+  var k;
+
+  for (var i = 0; i < keys.length; i++) {
+    k = keys[i];
+
+    if ('object' !== type(b[k]) && 'array' !== type(b[k])) {
+      // TODO: better deref handling of other types
+      a[k] = b[k];
+    } else {
+      a[k] = a.hasOwnProperty(k)
+        ? merge(a[k], b[k])
+        : merge('array' === type(b[k]) ? [] : {}, b[k]);
+    }
+  }
+
+  return a;
+}
 
 /**
  * ### Params.include(props, ...)
@@ -187,7 +334,7 @@ Params.exclude = function() {
 
 Params.prototype.parse = function(args) {
   args = [].slice.call(args);
-  if (args.length === 1 && 'array' === typeOf(args[0])) return args[0];
+  if (args.length === 1 && 'array' === type(args[0])) return args[0];
   return args
 };
 
