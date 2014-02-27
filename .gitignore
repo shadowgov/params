@@ -1,4 +1,5 @@
 node_modules/
-lib-cov/
-coverage.html
+build/
+components/
+coverage/
 npm-debug.log
