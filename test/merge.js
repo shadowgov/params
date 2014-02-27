@@ -1,4 +1,4 @@
-test('merge simple objects', function () {
+test('merge simple objects', function() {
   var a = {
     foo: 'bar',
     baz: { bing: 'beep' }
@@ -17,14 +17,14 @@ test('merge simple objects', function () {
   });
 });
 
-test('merge arrays', function () {
+test('merge arrays', function() {
   var a = [ { 'a': 1 }, 2 ];
   var b = [ { 'b': 3 }, 4 ];
   var c = params.merge(a, b);
   c.should.eql([ { a: 1, b: 3 }, 2, 4 ]);
 });
 
-test('merge nested arrays', function () {
+test('merge nested arrays', function() {
   var a = { foo: [ { bar: 'baz' }, 2, { you: 'too' }   ], bing: 'beep' };
   var b = { foo: [ { too: 'you' }, 4, { bing: 'beep' } ], bing: 'bop', beep: 'boop' };
   var c = params.merge(a, b);
@@ -41,7 +41,7 @@ test('merge nested arrays', function () {
   });
 });
 
-test('merge complex nested objects', function () {
+test('merge complex nested objects', function() {
   var a = {
     b: {
       c: {
