@@ -1,6 +1,8 @@
-var type = require('type-detect');
+/**
+ * Dependencies.
+ */
 
-module.exports = Params;
+var type = require('type-detect');
 
 /**
  * Params constructor.
@@ -13,7 +15,7 @@ function Params(hash) {
   if (!(this instanceof Params)) return new Params(hash);
   this.hash = hash;
   this.allowed = [];
-};
+}
 
 /**
  * #### Params.extend(dest, source, ...)
@@ -426,3 +428,9 @@ Params.prototype.slice = function() {
     }
   }, this);
 };
+
+/**
+ * Primary export.
+ */
+
+module.exports = Params;
