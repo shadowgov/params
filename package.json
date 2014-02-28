@@ -11,9 +11,6 @@
     "type": "git",
     "url": "https://github.com/vesln/params"
   },
-  "engines": {
-    "node": ">= 0.6.0"
-  },
   "scripts": {
     "test": "hydro"
   },
