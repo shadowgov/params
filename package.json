@@ -4,7 +4,6 @@
   "description": "Hash filter utility. Like strong params.",
   "author": "Veselin Todorov <hi@vesln.com>",
   "license": "MIT",
-  "keywords": [],
   "homepage": "https://github.com/vesln/params",
   "main": "./index.js",
   "repository": {
@@ -28,7 +27,6 @@
     "karma-phantomjs-launcher": "~0.1.1",
     "karma-safari-launcher": "~0.1.1",
     "karma-hydro": "*",
-    "component": "*",
-    "istanbul": "~0.1.46"
+    "component": "*"
   }
 }
