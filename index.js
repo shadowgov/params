@@ -61,20 +61,6 @@ Params.extend = function() {
   return res;
 };
 
-/*!
- * Actually extend
- */
-
-function extend(a, b) {
-  if (a && b) {
-    for (var key in b) {
-      a[key] = b[key];
-    }
-  }
-
-  return a;
-};
-
 /**
  * ### Params.merge (destination, source, ...)
  *
@@ -137,90 +123,6 @@ Params.merge = function() {;
 
   return res;
 };
-
-/*!
- * Start merge scenario by detecting if capable
- * and proxying to the appropriate sub-function.
- *
- * @param {Array|Object} destination
- * @param {Array|ObjectArray|Object} source
- * @return {Array|Object} destination merged
- * @api private
- */
-
-function merge(a, b) {
-  if (type(a) !== type(b)) {
-    throw new Error('Incompatible merge scenario.');
-  } else if ('object' === type(a)) {
-    return mergeObject(a, b);
-  } else if ('array' === type(a)) {
-    return mergeArray(a, b);
-  } else {
-    throw new Error('Unsupported merge scenario');
-  }
-};
-
-/*!
- * Start merge scenario for arrays.
- *
- * @param {Array} destination
- * @param {Array} source
- * @return {Array} destination merged
- * @api private
- */
-
-function mergeArray(a, b) {
-  var adds = [];
-  var ai = 0;
-
-  for (var i = 0; i < b.length; i++) {
-    if (('object' === type(a[i]) && 'object' === type(b[i]))
-    ||  ('array' === type(a[i]) && 'array' === type(b[i]))) {
-      a[i] = merge(a[i], b[i]);
-    } else if ('object' === type(b[i])) {
-      adds.push(merge({}, b[i]));
-    } else if ('array' === type(b[i])) {
-      adds.push(merge([], b[i]));
-    } else if (!~a.indexOf(b[i])) {
-      adds.push(b[i]);
-    }
-  }
-
-  for (; ai < adds.length; ai++) {
-    a.push(adds[ai]);
-  }
-
-  return a;
-}
-
-/*!
- * Start merge scenario for objects.
- *
- * @param {Object} destination
- * @param {Object} source
- * @return {Object} destination merged
- * @api private
- */
-
-function mergeObject (a, b) {
-  var keys = Object.keys(b)
-  var k;
-
-  for (var i = 0; i < keys.length; i++) {
-    k = keys[i];
-
-    if ('object' !== type(b[k]) && 'array' !== type(b[k])) {
-      // TODO: better deref handling of other types
-      a[k] = b[k];
-    } else {
-      a[k] = a.hasOwnProperty(k)
-        ? merge(a[k], b[k])
-        : merge('array' === type(b[k]) ? [] : {}, b[k]);
-    }
-  }
-
-  return a;
-}
 
 /**
  * ### Params.include(props, ...)
@@ -325,22 +227,6 @@ Params.exclude = function() {
 };
 
 /**
- * Parse arguments. If only one argument is supplied
- * and it is array, return it, instead of returning
- * the converted to array argument list.
- *
- * @param {Argumetns} args
- * @returns {Array}
- * @api private
- */
-
-Params.prototype.parse = function(args) {
-  args = [].slice.call(args);
-  if (args.length === 1 && 'array' === type(args[0])) return args[0];
-  return args
-};
-
-/**
  * Return a new hash, constructed from the
  * original hash, but containing only the
  * supplied keys.
@@ -428,6 +314,121 @@ Params.prototype.slice = function() {
     }
   }, this);
 };
+
+/**
+ * Parse arguments. If only one argument is supplied
+ * and it is array, return it, instead of returning
+ * the converted to array argument list.
+ *
+ * @param {Argumetns} args
+ * @returns {Array}
+ * @api private
+ */
+
+Params.prototype.parse = function(args) {
+  args = [].slice.call(args);
+  if (args.length === 1 && 'array' === type(args[0])) return args[0];
+  return args
+};
+
+/*!
+ * Actually extend
+ */
+
+function extend(a, b) {
+  if (a && b) {
+    for (var key in b) {
+      a[key] = b[key];
+    }
+  }
+
+  return a;
+}
+
+/*!
+ * Start merge scenario by detecting if capable
+ * and proxying to the appropriate sub-function.
+ *
+ * @param {Array|Object} destination
+ * @param {Array|ObjectArray|Object} source
+ * @return {Array|Object} destination merged
+ * @api private
+ */
+
+function merge(a, b) {
+  if (type(a) !== type(b)) {
+    throw new Error('Incompatible merge scenario.');
+  } else if ('object' === type(a)) {
+    return mergeObject(a, b);
+  } else if ('array' === type(a)) {
+    return mergeArray(a, b);
+  } else {
+    throw new Error('Unsupported merge scenario');
+  }
+}
+
+/*!
+ * Start merge scenario for arrays.
+ *
+ * @param {Array} destination
+ * @param {Array} source
+ * @return {Array} destination merged
+ * @api private
+ */
+
+function mergeArray(a, b) {
+  var adds = [];
+  var ai = 0;
+
+  for (var i = 0; i < b.length; i++) {
+    if (('object' === type(a[i]) && 'object' === type(b[i]))
+    ||  ('array' === type(a[i]) && 'array' === type(b[i]))) {
+      a[i] = merge(a[i], b[i]);
+    } else if ('object' === type(b[i])) {
+      adds.push(merge({}, b[i]));
+    } else if ('array' === type(b[i])) {
+      adds.push(merge([], b[i]));
+    } else if (!~a.indexOf(b[i])) {
+      adds.push(b[i]);
+    }
+  }
+
+  for (; ai < adds.length; ai++) {
+    a.push(adds[ai]);
+  }
+
+  return a;
+}
+
+/*!
+ * Start merge scenario for objects.
+ *
+ * @param {Object} destination
+ * @param {Object} source
+ * @return {Object} destination merged
+ * @api private
+ */
+
+function mergeObject (a, b) {
+  var keys = Object.keys(b)
+  var k;
+
+  for (var i = 0; i < keys.length; i++) {
+    k = keys[i];
+
+    if ('object' !== type(b[k]) && 'array' !== type(b[k])) {
+      // TODO: better deref handling of other types
+      a[k] = b[k];
+    } else {
+      a[k] = a.hasOwnProperty(k)
+        ? merge(a[k], b[k])
+        : merge('array' === type(b[k]) ? [] : {}, b[k]);
+    }
+  }
+
+  return a;
+}
+
 
 /**
  * Primary export.
