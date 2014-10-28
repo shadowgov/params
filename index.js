@@ -241,7 +241,9 @@ Params.prototype.only = function(args) {
   var obj = {};
 
   allowed.forEach(function(key) {
-    obj[key] = this.hash[key];
+    if (this.hash.hasOwnProperty(key)) {
+      obj[key] = this.hash[key];
+    }
   }, this);
 
   return obj;
