@@ -5,12 +5,15 @@
 var fixture = { foo: 'bar', baz: 'zo', cl: 'fn' };
 
 test('params(x).only(y)', function() {
-  var actual = null
+  var actual = null;
 
   actual = params(fixture).only('foo', 'baz');
   actual.should.eql({ foo: 'bar', baz: 'zo' });
 
   actual = params(fixture).only(['foo', 'baz']);
+  actual.should.eql({ foo: 'bar', baz: 'zo' });
+
+  actual = params(fixture).only('foo', 'baz', 'not_defined');
   actual.should.eql({ foo: 'bar', baz: 'zo' });
 });
 
