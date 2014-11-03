@@ -1,6 +1,6 @@
 {
   "name": "params",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hash filter utility. Like strong params.",
   "author": "Veselin Todorov <hi@vesln.com>",
   "license": "MIT",

@@ -1,4 +1,13 @@
 
+0.1.1 / 2014-11-03 
+==================
+
+ * Merge pull request #3 from johanneswuerbach/exclude-undefined
+ * Exclude undefined keys
+ * Merge pull request #4 from johanneswuerbach/patch-1
+ * Removed node 0.8 testing
+ * Node versions should be strings
+
 0.1.0 / 2014-07-22
 ==================
 
