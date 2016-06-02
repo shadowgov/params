@@ -291,15 +291,17 @@ Params.prototype.require = function(args) {
 };
 
 /**
- * Permit given "key".
+ * Permit given "key(s)".
  *
- * @param {String} key
+ * @param {Array|String} key
  * @returns {Params} `this`
  * @api public
  */
 
 Params.prototype.permit = function(key) {
-  this.allowed.push(key);
+  [].concat(key).forEach(function(key) {
+    this.allowed.push(key);
+  }, this)
   return this;
 };
 

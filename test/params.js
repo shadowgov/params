@@ -47,3 +47,13 @@ test('params(x).permit(y).slice()', function() {
 
   fixture.should.eql({ foo: 'bar', baz: 'zo' });
 });
+
+test('params(x, y, z).permit([x, y]).slice()', function() {
+  var fixture = { foo: 'bar', baz: 'zo', cl: 'fn' };
+
+  params(fixture)
+    .permit(['foo', 'baz'])
+    .slice();
+
+  fixture.should.eql({ foo: 'bar', baz: 'zo' });
+});
