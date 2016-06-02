@@ -48,10 +48,8 @@ Like `#only`, but mutates the object.
 ```js
 var hash = { foo: 1, bar: 2, baz: 3 };
 
-params(hash)
-  .permit('foo')
-  .permit('baz')
-  .slice()
+params(hash).permit('foo').permit('baz').slice()
+params(hash).permit(['foo', 'baz']).slice()
 
 console.log(hash);
 

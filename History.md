@@ -1,5 +1,10 @@
 
-0.1.1 / 2014-11-03 
+0.2.0 / 2016-05-01
+==================
+
+  * permit(array)
+
+0.1.1 / 2014-11-03
 ==================
 
  * Merge pull request #3 from johanneswuerbach/exclude-undefined
